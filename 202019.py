@@ -65,7 +65,10 @@ for message in messages:
 # Only rules 8 and 11 are recursive, and they're only depended on by rule 0.
 # Rule 8 is "42 | 42 8", and rule 11 is "42 31 | 42 11 31".
 
-# First check rule 8, which is just rule 42 repeated one or more times.
+# Rule 0 is "8 11", which means that we have a series of 42s (without limt) plus
+# a equal number of 42s and 31s. What this really means is that we have a series
+# of 42s followed by a series of 31s that is at least one fewer than the number
+# of 42s. This simplifies the problem quite a bit.
 
 rule_42 = set(generate(42))
 
