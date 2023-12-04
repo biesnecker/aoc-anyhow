@@ -1,6 +1,6 @@
 from functools import cache
 
-cards = {}
+scores = {}
 
 with open("202304.txt", "r") as f:
     for line in f:
@@ -9,9 +9,7 @@ with open("202304.txt", "r") as f:
         [winning, nums] = card.split(" | ")
         winning = set(map(int, winning.split()))
         nums = set(map(int, nums.split()))
-        cards[card_id] = (winning, nums)
-
-scores = {card_id: len(winning & nums) for card_id, (winning, nums) in cards.items()}
+        scores[card_id] = len(winning & nums)
 
 part_one = 0
 for score in scores.values():
@@ -21,15 +19,15 @@ print(f"Part one: {part_one}")
 
 
 @cache
-def n_cards_for_cards(card_id):
+def n_cards_for_card(card_id):
     score = scores[card_id]
     if score == 0:
         return 1
     else:
         return 1 + sum(
-            n_cards_for_cards(i) for i in range(card_id + 1, card_id + 1 + score)
+            n_cards_for_card(i) for i in range(card_id + 1, card_id + 1 + score)
         )
 
 
-part_two = sum(n_cards_for_cards(card_id) for card_id in cards.keys())
+part_two = sum(n_cards_for_card(card_id) for card_id in scores.keys())
 print(f"Part two: {part_two}")
