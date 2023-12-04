@@ -11,22 +11,14 @@ with open("202304.txt", "r") as f:
         nums = set(map(int, nums.split()))
         scores[card_id] = len(winning & nums)
 
-part_one = 0
-for score in scores.values():
-    if score > 0:
-        part_one += 2 ** (score - 1)
+part_one = sum(2 ** (score - 1) for score in scores.values() if score > 0)
 print(f"Part one: {part_one}")
 
 
 @cache
 def n_cards_for_card(card_id):
     score = scores[card_id]
-    if score == 0:
-        return 1
-    else:
-        return 1 + sum(
-            n_cards_for_card(i) for i in range(card_id + 1, card_id + 1 + score)
-        )
+    return 1 + sum(n_cards_for_card(i) for i in range(card_id + 1, card_id + 1 + score))
 
 
 part_two = sum(n_cards_for_card(card_id) for card_id in scores.keys())
