@@ -8,8 +8,8 @@ def read_intcode(filename):
         return [int(x) for x in f.read().split(",")]
 
 
-def intcode_from_file(filename, input=lambda: deque()):
-    return Intcode(read_intcode(filename), input)
+def intcode_from_file(filename, input=deque(), *, mod={}):
+    return Intcode(read_intcode(filename), input, mod=mod)
 
 
 class Opcode(IntEnum):
@@ -40,7 +40,7 @@ class ParameterMode(IntEnum):
 
 
 class Intcode:
-    def __init__(self, program, input=lambda: deque()):
+    def __init__(self, program, input=deque(), *, mod={}):
         self.program = program
         self.pointer = 0
         self.base = 0
@@ -49,6 +49,9 @@ class Intcode:
         assert isinstance(input, Sequence)
         self.input = deque(input)
         self.output = deque()
+        if mod:
+            for k, v in mod.items():
+                self.program[k] = v
 
     def append_input(self, value):
         self.input.append(value)
