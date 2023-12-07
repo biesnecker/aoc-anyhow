@@ -42,41 +42,41 @@ def to_sort_key(cards, jokers=False):
     if jokers:
         n_jokers = cc["J"]
         del cc["J"]
-    res = Hand.HIGH_CARD
-    if 5 in cc.values():
-        res = Hand.FIVE_OF_A_KIND
-    elif 4 in cc.values():
-        res = Hand.FOUR_OF_A_KIND
-    elif 3 in cc.values():
-        if 2 in cc.values():
+    match list(sorted(cc.values(), reverse=True)):
+        case [5]:
+            res = Hand.FIVE_OF_A_KIND
+        case [4, *_]:
+            res = Hand.FOUR_OF_A_KIND
+        case [3, 2]:
             res = Hand.FULL_HOUSE
-        else:
+        case [3, *_]:
             res = Hand.THREE_OF_A_KIND
-    elif 2 in cc.values():
-        if len(list(v for v in cc.values() if v == 2)) == 2:
+        case [2, 2, *_]:
             res = Hand.TWO_PAIR
-        else:
+        case [2, *_]:
             res = Hand.ONE_PAIR
-    else:
-        res = Hand.HIGH_CARD
-
+        case _:
+            res = Hand.HIGH_CARD
     if jokers:
         if n_jokers == 5:
             res = Hand.FIVE_OF_A_KIND
         else:
             while n_jokers > 0:
-                if res == Hand.FIVE_OF_A_KIND:
-                    raise ValueError("Too many jokers")
-                elif res == Hand.FOUR_OF_A_KIND:
-                    res = Hand.FIVE_OF_A_KIND
-                elif res == Hand.THREE_OF_A_KIND:
-                    res = Hand.FOUR_OF_A_KIND
-                elif res == Hand.TWO_PAIR:
-                    res = Hand.FULL_HOUSE
-                elif res == Hand.ONE_PAIR:
-                    res = Hand.THREE_OF_A_KIND
-                elif res == Hand.HIGH_CARD:
-                    res = Hand.ONE_PAIR
+                match res:
+                    case Hand.FIVE_OF_A_KIND:
+                        raise ValueError("Too many jokers")
+                    case Hand.FOUR_OF_A_KIND:
+                        res = Hand.FIVE_OF_A_KIND
+                    case Hand.FULL_HOUSE:
+                        raise ValueError("Too many jokers")
+                    case Hand.THREE_OF_A_KIND:
+                        res = Hand.FOUR_OF_A_KIND
+                    case Hand.TWO_PAIR:
+                        res = Hand.FULL_HOUSE
+                    case Hand.ONE_PAIR:
+                        res = Hand.THREE_OF_A_KIND
+                    case Hand.HIGH_CARD:
+                        res = Hand.ONE_PAIR
                 n_jokers -= 1
     [a, b, c, d, e] = [card_value(x, jokers) for x in cards]
     return (res, a, b, c, d, e)
