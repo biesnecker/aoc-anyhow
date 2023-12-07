@@ -1,7 +1,6 @@
 from intcode import Intcode, OutputInterrupt, intcode_from_file
-from collections import deque
 
-intcode = intcode_from_file("201905.txt", deque([1]))
+intcode = intcode_from_file("201905.txt", [1])
 while not intcode.halted:
     try:
         intcode.run()
@@ -10,7 +9,7 @@ while not intcode.halted:
 
 print(f"Part one: {intcode.output[-1]}")
 
-intcode = intcode_from_file("201905.txt", deque([5]))
+intcode = intcode_from_file("201905.txt", [5])
 part_two = 0
 try:
     v = intcode.run()

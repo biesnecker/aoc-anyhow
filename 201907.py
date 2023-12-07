@@ -1,5 +1,4 @@
 from intcode import Intcode, InputInterrupt, OutputInterrupt, read_intcode
-from collections import deque
 from itertools import permutations
 
 prog = read_intcode("201907.txt")
@@ -7,7 +6,7 @@ part_one = 0
 for phase in permutations(range(5)):
     signal = 0
     for p in phase:
-        intcode = Intcode(prog.copy(), deque([p, signal]))
+        intcode = Intcode(prog.copy(), [p, signal])
         try:
             signal = intcode.run()
         except OutputInterrupt:
@@ -17,7 +16,7 @@ print(f"Part one: {part_one}")
 
 part_two = 0
 for phase in permutations(range(5, 10)):
-    amps = [Intcode(prog.copy(), deque([p])) for p in phase]
+    amps = [Intcode(prog.copy(), [p]) for p in phase]
     amps[0].append_input(0)  # provide initial input to first amp
     all_halted = False
     while not all_halted:
