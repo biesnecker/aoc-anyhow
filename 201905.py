@@ -1,35 +1,20 @@
-from intcode import (
-    Intcode,
-    IntcodeNeedsInput,
-    IntcodeHasOutput,
-    IntcodeHalted,
-    intcode_from_file,
-)
+from intcode import Intcode, OutputInterrupt, intcode_from_file
+from collections import deque
 
-intcode = intcode_from_file("201905.txt")
-part_one = 0
-v = intcode.run()
-while not isinstance(v, IntcodeHalted):
-    if isinstance(v, IntcodeNeedsInput):
-        v = v.continuation(1)
-    elif isinstance(v, IntcodeHasOutput):
-        part_one = v.value
-        v = v.continuation()
-    else:
-        raise Exception("Unknown return value from intcode")
+intcode = intcode_from_file("201905.txt", deque([1]))
+while not intcode.halted:
+    try:
+        intcode.run()
+    except OutputInterrupt:
+        pass  # only need the last output
 
-print(f"Part one: {part_one}")
+print(f"Part one: {intcode.output[-1]}")
 
-intcode = intcode_from_file("201905.txt")
+intcode = intcode_from_file("201905.txt", deque([5]))
 part_two = 0
-v = intcode.run()
-while not isinstance(v, IntcodeHalted):
-    if isinstance(v, IntcodeNeedsInput):
-        v = v.continuation(5)
-    elif isinstance(v, IntcodeHasOutput):
-        part_two = v.value
-        v = v.continuation()
-    else:
-        raise Exception("Unknown return value from intcode")
+try:
+    v = intcode.run()
+except OutputInterrupt:
+    part_two = intcode.output.popleft()
 
 print(f"Part two: {part_two}")

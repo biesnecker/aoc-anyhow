@@ -1,4 +1,5 @@
 from enum import IntEnum
+from collections import deque
 
 
 def read_intcode(filename):
@@ -6,8 +7,28 @@ def read_intcode(filename):
         return [int(x) for x in f.read().split(",")]
 
 
-def intcode_from_file(filename):
-    return Intcode(read_intcode(filename))
+def intcode_from_file(filename, input=lambda: deque()):
+    return Intcode(read_intcode(filename), input)
+
+
+class Opcode(IntEnum):
+    ADD = 1
+    MUL = 2
+    IN = 3
+    OUT = 4
+    JIT = 5
+    JIF = 6
+    LT = 7
+    EQ = 8
+    HALT = 99
+
+
+class InputInterrupt(Exception):
+    pass
+
+
+class OutputInterrupt(Exception):
+    pass
 
 
 class ParameterMode(IntEnum):
@@ -15,76 +36,72 @@ class ParameterMode(IntEnum):
     IMMEDIATE = 1
 
 
-class IntcodeNeedsInput:
-    def __init__(self, continuation):
-        assert callable(continuation)
-        self.continuation = continuation
-
-
-class IntcodeHasOutput:
-    def __init__(self, value, continuation):
-        self.value = value
-        assert callable(continuation)
-        self.continuation = continuation
-
-
-class IntcodeHalted:
-    pass
-
-
 class Intcode:
-    def __init__(self, program):
+    def __init__(self, program, input=lambda: deque()):
         self.program = program
         self.pointer = 0
         self.halted = False
+        self.input = input
+        self.output = deque()
+
+    def append_input(self, value):
+        self.input.append(value)
+
+    def pop_output(self):
+        return self.output.popleft()
 
     def run(self):
         while not self.halted:
-            sv = self._step()
-            if sv is not None:
-                return sv
-
-    def read(self, address):
-        return self.program[address]
-
-    def _step(self):
-        (opcode, modes) = self._parse_opcode(self.program[self.pointer])
-        self.pointer += 1
-        if opcode == 99:
-            self.halted = True
-            return IntcodeHalted()
-        elif opcode == 1:  # ADD
-            a = self._read(modes[0])
-            b = self._read(modes[1])
-            self._write(a + b, modes[2])
-        elif opcode == 2:  # MUL
-            a = self._read(modes[0])
-            b = self._read(modes[1])
-            self._write(a * b, modes[2])
-        elif opcode == 3:  # INPUT
-            return self._input(modes)
-        elif opcode == 4:  # OUTPUT
-            return self._output(modes)
-        elif opcode == 5:  # JUMP-IF-TRUE
-            a = self._read(modes[0])
-            b = self._read(modes[1])
-            if a != 0:
-                self.pointer = b
-        elif opcode == 6:  # JUMP-IF-FALSE
-            a = self._read(modes[0])
-            b = self._read(modes[1])
-            if a == 0:
-                self.pointer = b
-        elif opcode == 7:  # LESS-THAN
-            a = self._read(modes[0])
-            b = self._read(modes[1])
-            self._write(1 if a < b else 0, modes[2])
-        elif opcode == 8:  # EQUALS
-            a = self._read(modes[0])
-            b = self._read(modes[1])
-            self._write(1 if a == b else 0, modes[2])
-        else:
-            raise ValueError(f"Invalid opcode: {opcode}")
+            opcode, modes = self._parse_opcode(self.program[self.pointer])
+            if opcode == Opcode.HALT:
+                self.halted = True
+                return
+            elif opcode == Opcode.ADD:
+                a = self._read(self.pointer + 1, modes[0])
+                b = self._read(self.pointer + 2, modes[1])
+                self._write(self.pointer + 3, a + b, modes[2])
+                self.pointer += 4
+            elif opcode == Opcode.MUL:
+                a = self._read(self.pointer + 1, modes[0])
+                b = self._read(self.pointer + 2, modes[1])
+                self._write(self.pointer + 3, a * b, modes[2])
+                self.pointer += 4
+            elif opcode == Opcode.IN:
+                try:
+                    v = self.input.popleft()
+                    self._write(self.pointer + 1, v, modes[0])
+                    self.pointer += 2
+                except IndexError:
+                    raise InputInterrupt()
+            elif opcode == Opcode.OUT:
+                v = self._read(self.pointer + 1, modes[0])
+                self.output.append(v)
+                self.pointer += 2
+                raise OutputInterrupt()
+            elif opcode == Opcode.JIT:
+                v = self._read(self.pointer + 1, modes[0])
+                if v != 0:
+                    self.pointer = self._read(self.pointer + 2, modes[1])
+                else:
+                    self.pointer += 3
+            elif opcode == Opcode.JIF:
+                v = self._read(self.pointer + 1, modes[0])
+                if v == 0:
+                    self.pointer = self._read(self.pointer + 2, modes[1])
+                else:
+                    self.pointer += 3
+            elif opcode == Opcode.LT:
+                a = self._read(self.pointer + 1, modes[0])
+                b = self._read(self.pointer + 2, modes[1])
+                self._write(self.pointer + 3, 1 if a < b else 0, modes[2])
+                self.pointer += 4
+            elif opcode == Opcode.EQ:
+                a = self._read(self.pointer + 1, modes[0])
+                b = self._read(self.pointer + 2, modes[1])
+                self._write(self.pointer + 3, 1 if a == b else 0, modes[2])
+                self.pointer += 4
+            else:
+                raise Exception(f"Unknown opcode: {opcode} @ position {self.pointer}")
 
     def _parse_opcode(self, opcode):
         o = opcode % 100
@@ -93,39 +110,18 @@ class Intcode:
         p3 = (opcode // 10000) % 10
         return (o, (p1, p2, p3))
 
-    def _read(self, mode):
+    def _read(self, address, mode):
         if mode == ParameterMode.POSITION:
-            x = self.program[self.program[self.pointer]]
+            return self.program[self.program[address]]
         elif mode == ParameterMode.IMMEDIATE:
-            x = self.program[self.pointer]
+            return self.program[address]
         else:
-            raise ValueError(f"Invalid parameter mode: {mode}")
-        self.pointer += 1
-        return x
+            raise Exception(f"Unknown parameter mode: {mode}")
 
-    def _write(self, value, mode):
+    def _write(self, address, value, mode):
         if mode == ParameterMode.POSITION:
-            self.program[self.program[self.pointer]] = value
+            self.program[self.program[address]] = value
         elif mode == ParameterMode.IMMEDIATE:
-            raise ValueError("Cannot write in immediate mode")
+            raise Exception("Cannot write to immediate parameter")
         else:
-            raise ValueError(f"Invalid parameter mode: {mode}")
-        self.pointer += 1
-
-    # returns a function that takes an input value and continues execution
-    # of the program
-    def _input(self, modes):
-        def f(value):
-            self._write(value, modes[0])
-            return self.run()
-
-        return IntcodeNeedsInput(f)
-
-    # returns a value and a function that continues execution of the program
-    def _output(self, modes):
-        value = self._read(modes[0])
-
-        def f():
-            return self.run()
-
-        return IntcodeHasOutput(value, f)
+            raise Exception(f"Unknown parameter mode: {mode}")

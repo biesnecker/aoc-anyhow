@@ -7,7 +7,7 @@ prog[2] = 2
 intcode = Intcode(prog)
 intcode.run()
 
-print(f"Part one: {intcode.read(0)}")
+print(f"Part one: {intcode.program[0]}")
 
 for noun in range(100):
     for verb in range(100):
@@ -18,6 +18,6 @@ for noun in range(100):
         intcode = Intcode(prog)
         intcode.run()
 
-        if intcode.read(0) == 19690720:
+        if intcode.program[0] == 19690720:
             print(f"Part two: {100 * noun + verb}")
             break
