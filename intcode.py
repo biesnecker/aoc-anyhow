@@ -1,6 +1,7 @@
 from enum import IntEnum
 from collections import defaultdict, deque
 from collections.abc import Sequence
+import pickle
 
 
 def read_intcode(filename):
@@ -10,6 +11,10 @@ def read_intcode(filename):
 
 def intcode_from_file(filename, input=deque(), *, mod={}):
     return Intcode(read_intcode(filename), input, mod=mod)
+
+
+def intcode_from_pickle(bytes):
+    return pickle.loads(bytes)
 
 
 class Opcode(IntEnum):
@@ -53,11 +58,26 @@ class Intcode:
             for k, v in mod.items():
                 self.program[k] = v
 
+    def __copy__(self):
+        c = Intcode(
+            self.program.copy(),
+            self.input.copy(),
+        )
+        c.pointer = self.pointer
+        c.base = self.base
+        c.halted = self.halted
+        c.memory = self.memory.copy()
+        c.output = self.output.copy()
+        return c
+
     def append_input(self, value):
         self.input.append(value)
 
     def pop_output(self):
         return self.output.popleft()
+
+    def pickle(self):
+        return pickle.dumps(self)
 
     def run(self):
         while not self.halted:
@@ -76,12 +96,11 @@ class Intcode:
                     self._write(self.pointer + 3, a * b, m3)
                     self.pointer += 4
                 case (Opcode.IN, (m1, _, _)):
-                    try:
-                        v = self.input.popleft()
-                        self._write(self.pointer + 1, v, m1)
-                        self.pointer += 2
-                    except IndexError:
+                    if not self.input:
                         raise InputInterrupt()
+                    v = self.input.popleft()
+                    self._write(self.pointer + 1, v, m1)
+                    self.pointer += 2
                 case (Opcode.OUT, (m1, _, _)):
                     v = self._read(self.pointer + 1, m1)
                     self.output.append(v)
