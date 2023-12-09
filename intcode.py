@@ -131,9 +131,9 @@ class Intcode:
                 case (Opcode.REL, (m1, _, _)):
                     self.base += self._read(self.pointer + 1, m1)
                     self.pointer += 2
-                case _:
+                case opcode:
                     raise Exception(
-                        f"Unknown opcode: {opcode} @ position {self.pointer}"
+                        f"Unknown opcode: {opcode} (raw: {self.program[self.pointer]}) @ position {self.pointer}"
                     )
 
     def _parse_opcode(self, opcode):
