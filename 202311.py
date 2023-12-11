@@ -28,15 +28,13 @@ def find_distances(grid, expansion_factor):
         [min_x, max_x] = sorted([ix, jx])
         [min_y, max_y] = sorted([iy, jy])
         total += (max_x - min_x) + sum(
-            expansion_factor for x in range(min_x, max_x + 1) if x in empty_cols
+            expansion_factor - 1 for x in range(min_x, max_x + 1) if x in empty_cols
         )
         total += (max_y - min_y) + sum(
-            expansion_factor for y in range(min_y, max_y + 1) if y in empty_rows
+            expansion_factor - 1 for y in range(min_y, max_y + 1) if y in empty_rows
         )
     return total
 
 
-print(f"Part one: {find_distances(grid, 1)}")
-
-# Love me some off-by-one errors.
-print(f"Part two: {find_distances(grid, 1000000-1)}")
+print(f"Part one: {find_distances(grid, 2)}")
+print(f"Part two: {find_distances(grid, 1000000)}")
