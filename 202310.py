@@ -1,5 +1,7 @@
 from collections import deque
 
+from grid import grid_bounds
+
 grid = {}
 sx, sy = -1, -1
 
@@ -76,18 +78,31 @@ match (top_connects, bottom_connects, left_connects, right_connects):
         grid[(sx, sy)] = "F"
     case x:
         raise ValueError(f"Invalid outlets for S: {x}")
-print(grid[(sx, sy)])
 
 q = deque([(sx, sy, 0)])
 visited = {(sx, sy)}
 max_steps = -1
 while q:
     (x, y, steps) = q.popleft()
-    print(x, y, steps, grid[(x, y)])
     max_steps = max(max_steps, steps)
     for nx, ny in possible(grid, x, y):
-        print(f"Possible: {nx}, {ny} ({grid[(nx, ny)]})")
         if (nx, ny) not in visited:
             visited.add((nx, ny))
             q.append((nx, ny, steps + 1))
 print(f"Part one: {max_steps}")
+
+# Remove all the unvisited tiles from the grid. We don't need them.
+for x, y in list(grid.keys()):
+    if (x, y) not in visited:
+        del grid[(x, y)]
+
+part_two = 0
+(min_x, max_x), (min_y, max_y) = grid_bounds(grid)
+for y in range(min_y, max_y + 1):
+    cnt = 0
+    for x in range(min_x, max_x + 1):
+        if (x, y) in grid and grid[(x, y)] in {"|", "J", "L"}:
+            cnt += 1
+        elif (x, y) not in grid and cnt % 2 == 1:
+            part_two += 1
+print(f"Part two: {part_two}")
