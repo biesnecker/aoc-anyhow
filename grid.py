@@ -20,8 +20,19 @@ def debug_print_grid(
 
 
 def grid_bounds(grid):
-    min_x = min(x for (x, _) in grid.keys())
-    max_x = max(x for (x, _) in grid.keys())
-    min_y = min(y for (_, y) in grid.keys())
-    max_y = max(y for (_, y) in grid.keys())
+    if isinstance(grid, dict):
+        grid = set(grid.keys())
+    elif isinstance(grid, set):
+        pass
+    else:
+        raise TypeError(f"grid_bounds: unknown type {type(grid)}")
+    min_x = min(x for (x, _) in grid)
+    max_x = max(x for (x, _) in grid)
+    min_y = min(y for (_, y) in grid)
+    max_y = max(y for (_, y) in grid)
     return ((min_x, max_x), (min_y, max_y))
+
+
+def grid_wh(grid):
+    ((min_x, max_x), (min_y, max_y)) = grid_bounds(grid)
+    return (max_x - min_x + 1, max_y - min_y + 1)
