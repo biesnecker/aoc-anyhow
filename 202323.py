@@ -1,7 +1,6 @@
 from collections import deque
 import networkx as nx
 
-
 with open("202323.txt", "r") as f:
     grid = [line.strip() for line in f]
     mx = len(grid[0])
@@ -69,13 +68,42 @@ def compressed_graph(grid, *, slopes):
     return H
 
 
-for slopes in (True, False):
-    g = compressed_graph(grid, slopes=slopes)
-    res = 0
-    c = 0
-    for path in nx.all_simple_edge_paths(g, (sx, sy), (ex, ey)):
-        res = max(res, sum(g.edges[n]["weight"] for n in path))
-    if slopes:
-        print(f"Part one: {res}")
-    else:
-        print(f"Part two: {res}")
+def dfs(G, start, end):
+    cache_keys = {node: i for i, node in enumerate(G.nodes)}
+    cache = {}
+
+    def dfs_helper(node, seen):
+        if node == end:
+            return 0
+        if (ck := (node, seen)) in cache:
+            return cache[ck]
+        res = 0
+        neighbors = set(G.neighbors(node))
+        if end in neighbors:
+            res = G.edges[node, end]["weight"]
+        else:
+            for neighbor in neighbors:
+                if neighbor == end:
+                    # if we're at a node that connects to the end, then we have
+                    # to choose the end, because otherwise we've blocked our
+                    # own path.
+                    res = max(res, G.edges[node, neighbor]["weight"])
+                    break
+                if seen & (nck := 1 << cache_keys[neighbor]):
+                    continue
+                res = max(
+                    res,
+                    G.edges[node, neighbor]["weight"]
+                    + dfs_helper(neighbor, seen | nck),
+                )
+        cache[ck] = res
+        return res
+
+    return dfs_helper(start, 1 << cache_keys[start])
+
+
+part_one = dfs(compressed_graph(grid, slopes=True), (sx, sy), (ex, ey))
+part_two = dfs(compressed_graph(grid, slopes=False), (sx, sy), (ex, ey))
+
+print(f"Part one: {part_one}")
+print(f"Part two: {part_two}")
