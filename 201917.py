@@ -1,5 +1,6 @@
-from intcode import Intcode, OutputInterrupt, intcode_from_file
 from enum import IntEnum
+
+from intcode import intcode_from_file, OutputInterrupt
 
 c = intcode_from_file("201917.txt")
 

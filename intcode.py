@@ -1,7 +1,7 @@
-from enum import IntEnum
+import pickle
 from collections import defaultdict, deque
 from collections.abc import Sequence
-import pickle
+from enum import IntEnum
 
 
 def read_intcode(filename):
@@ -11,6 +11,10 @@ def read_intcode(filename):
 
 def intcode_from_file(filename, input=deque(), *, mod={}):
     return Intcode(read_intcode(filename), input, mod=mod)
+
+
+def intcode_from_prog(prog, input=deque(), *, mod={}):
+    return Intcode(prog.copy(), input, mod=mod)
 
 
 def intcode_from_pickle(bytes):
