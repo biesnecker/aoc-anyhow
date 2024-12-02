@@ -18,18 +18,10 @@ def is_valid(nums, skipping=False):
     ds = [d > 0 for d in diffs]
     return all(d == ds[0] for d in ds)
 
-part_one = 0
-
-for nums in inp:
-    if is_valid(nums):
-        part_one += 1
+part_one = sum(is_valid(nums) for nums in inp)
 
 print(f"Part one: {part_one}")
 
-part_two = 0
-
-for nums in inp:
-    if is_valid(nums, skipping=True):
-        part_two += 1
+part_two = sum(is_valid(nums, skipping=True) for nums in inp)
 
 print(f"Part two: {part_two}")
