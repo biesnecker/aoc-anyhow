@@ -1,11 +1,6 @@
-from collections import defaultdict, Counter
+from utils import input_as_list_of_numbers
 
-inp = []
-
-with open("202402.txt", "r") as f:
-    for line in f:
-        line = line.strip()
-        inp.append(list(map(int, line.split())))
+inp = input_as_list_of_numbers("202402.txt")
         
 def is_valid(nums, skipping=False):
     if skipping:

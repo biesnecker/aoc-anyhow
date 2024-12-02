@@ -1,16 +1,15 @@
 from collections import Counter
+from utils import input_as_list_of_numbers
 
 left = []
 right = []
 
-with open("202401.txt", "r") as f:
-    for line in f:
-        [a, b] = list(map(int, line.split()))
-        left.append(a)
-        right.append(b)
+for [a, b] in input_as_list_of_numbers("202401.txt"):
+    left.append(a)
+    right.append(b)
 
-    left.sort()
-    right.sort()
+left.sort()
+right.sort()
 
 part_one = sum(abs(x - y) for (x, y) in zip(left, right))
 
