@@ -1,39 +1,43 @@
 from enum import Enum
-from typing import Iterator, List, Tuple
+from typing import Iterator, List, Optional, Tuple
 
 
-def input_as_string(filename):
+def input_as_string(filename: str) -> str:
     with open(filename, "r") as f:
         return f.read().strip()
 
 
-def input_as_strings_iter(filename):
+def input_as_strings_iter(filename: str) -> Iterator[str]:
     with open(filename, "r") as f:
         for line in f:
             yield line.strip()
 
 
-def input_as_strings(filename):
+def input_as_strings(filename: str) -> List[str]:
     return list(input_as_strings_iter(filename))
 
 
-def input_as_numbers_iter(filename):
+def input_as_numbers_iter(filename: str) -> Iterator[int]:
     with open(filename, "r") as f:
         for line in f:
             yield int(line.strip())
 
 
-def input_as_numbers(filename):
+def input_as_numbers(filename: str) -> List[int]:
     return list(input_as_numbers_iter(filename))
 
 
-def input_as_list_of_numbers_iter(filename, split_on=None):
+def input_as_list_of_numbers_iter(
+    filename: str, split_on: Optional[str] = None
+) -> Iterator[List[int]]:
     with open(filename, "r") as f:
         for line in f:
             yield list(map(lambda v: int(v.strip()), line.strip().split(split_on)))
 
 
-def input_as_list_of_numbers(filename, split_on=None):
+def input_as_list_of_numbers(
+    filename: str, split_on: Optional[str] = None
+) -> List[List[int]]:
     return list(input_as_list_of_numbers_iter(filename, split_on))
 
 
