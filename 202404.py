@@ -13,7 +13,7 @@ next_char = {"X": "M", "M": "A", "A": "S"}
 part_one = 0
 # Every X is a potential start point
 q: Deque[Tuple[str, complex, Optional[Dir]]] = deque(
-    [("X", pos, None) for pos, char in letters.items() if char == "X"]
+    ("X", pos, None) for pos, char in letters.items() if char == "X"
 )
 
 while q:
