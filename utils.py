@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Tuple
+from typing import Iterator, List, Tuple
 
 
 def input_as_string(filename):
@@ -48,23 +48,22 @@ class Dir(Enum):
     SOUTHWEST = -1 + 1j
 
 
-def get_neighbors_sides(pos: complex) -> List[Tuple[Dir, complex]]:
-    return [
-        (Dir.NORTH, pos + Dir.NORTH.value),
-        (Dir.SOUTH, pos + Dir.SOUTH.value),
-        (Dir.WEST, pos + Dir.WEST.value),
-        (Dir.EAST, pos + Dir.EAST.value),
-    ]
+def get_neighbors_sides(pos: complex) -> Iterator[Tuple[Dir, complex]]:
+    yield (Dir.NORTH, pos + Dir.NORTH.value)
+    yield (Dir.SOUTH, pos + Dir.SOUTH.value)
+    yield (Dir.WEST, pos + Dir.WEST.value)
+    yield (Dir.EAST, pos + Dir.EAST.value)
 
 
-def get_neighbors_diagonal(pos: complex) -> List[Tuple[Dir, complex]]:
-    return [
-        (Dir.NORTHEAST, pos + Dir.NORTHEAST.value),
-        (Dir.NORTHWEST, pos + Dir.NORTHWEST.value),
-        (Dir.SOUTHEAST, pos + Dir.SOUTHEAST.value),
-        (Dir.SOUTHWEST, pos + Dir.SOUTHWEST.value),
-    ]
+def get_neighbors_diagonal(pos: complex) -> Iterator[Tuple[Dir, complex]]:
+    yield (Dir.NORTHEAST, pos + Dir.NORTHEAST.value)
+    yield (Dir.NORTHWEST, pos + Dir.NORTHWEST.value)
+    yield (Dir.SOUTHEAST, pos + Dir.SOUTHEAST.value)
+    yield (Dir.SOUTHWEST, pos + Dir.SOUTHWEST.value)
 
 
-def get_neighbors_all(pos: complex) -> List[Tuple[Dir, complex]]:
-    return get_neighbors_sides(pos) + get_neighbors_diagonal(pos)
+def get_neighbors_all(pos: complex) -> Iterator[Tuple[Dir, complex]]:
+    for d in get_neighbors_sides(pos):
+        yield d
+    for d in get_neighbors_diagonal(pos):
+        yield d
