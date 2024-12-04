@@ -52,7 +52,7 @@ class Dir(Enum):
     SOUTHWEST = -1 + 1j
 
 
-def get_neighbors_sides(pos: complex) -> Iterator[Tuple[Dir, complex]]:
+def get_neighbors_cardinal(pos: complex) -> Iterator[Tuple[Dir, complex]]:
     yield (Dir.NORTH, pos + Dir.NORTH.value)
     yield (Dir.SOUTH, pos + Dir.SOUTH.value)
     yield (Dir.WEST, pos + Dir.WEST.value)
@@ -67,7 +67,7 @@ def get_neighbors_diagonal(pos: complex) -> Iterator[Tuple[Dir, complex]]:
 
 
 def get_neighbors_all(pos: complex) -> Iterator[Tuple[Dir, complex]]:
-    for d in get_neighbors_sides(pos):
+    for d in get_neighbors_cardinal(pos):
         yield d
     for d in get_neighbors_diagonal(pos):
         yield d
