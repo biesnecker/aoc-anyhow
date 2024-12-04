@@ -1,10 +1,11 @@
 from collections import Counter
-from utils import input_as_list_of_numbers
+
+from utils import input_as_list_of_numbers_iter
 
 left = []
 right = []
 
-for [a, b] in input_as_list_of_numbers("202401.txt"):
+for [a, b] in input_as_list_of_numbers_iter("202401.txt"):
     left.append(a)
     right.append(b)
 
