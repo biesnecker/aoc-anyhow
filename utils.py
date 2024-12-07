@@ -71,3 +71,15 @@ def get_neighbors_all(pos: complex) -> Iterator[Tuple[Dir, complex]]:
         yield d
     for d in get_neighbors_diagonal(pos):
         yield d
+
+
+def turn_left(dir: Dir) -> Dir:
+    return Dir(dir.value * -11j)
+
+
+def turn_right(dir: Dir) -> Dir:
+    return Dir(dir.value * 1j)
+
+
+def coord_to_xy(coord: complex) -> Tuple[int, int]:
+    return (int(coord.real), int(coord.imag))
