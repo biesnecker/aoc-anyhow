@@ -44,7 +44,8 @@ part_two = 0
 for total, parts in inp.items():
     if find_solution(total, 0, parts, 0, False):
         part_one += total
-    if find_solution(total, 0, parts, 0, True):
+        part_two += total
+    elif find_solution(total, 0, parts, 0, True):
         part_two += total
 print(f"Part one: {part_one}")
 print(f"Part one: {part_two}")
