@@ -83,3 +83,7 @@ def turn_right(dir: Dir) -> Dir:
 
 def coord_to_xy(coord: complex) -> Tuple[int, int]:
     return (int(coord.real), int(coord.imag))
+
+
+def xy_to_coord(x: int, y: int) -> complex:
+    return x + y * 1j
