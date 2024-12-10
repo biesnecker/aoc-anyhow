@@ -9,7 +9,7 @@ for y, row in enumerate(input_as_strings_iter("202410.txt")):
 def solve(unique: bool = False) -> int:
     starts = [c for c, v in grid.items() if v == 0]
 
-    def bfs(start: complex) -> int:
+    def dfs(start: complex) -> int:
         visited = set()
         q = [start]
         visited.add(start)
@@ -27,7 +27,7 @@ def solve(unique: bool = False) -> int:
                     q.append(npos)
         return res
 
-    return sum(bfs(s) for s in starts)
+    return sum(dfs(s) for s in starts)
 
 
 print(f"Part one: {solve()}")
