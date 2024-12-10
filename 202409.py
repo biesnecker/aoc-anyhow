@@ -57,11 +57,13 @@ def part_one():
 
 def part_two():
     input = get_input()
+    # print(f"{input}\n\n")
     j = len(input) - 1
     while j >= 0:
-        # print(j, input[j])
+        # print(f">>> {j}, {input[j]}")
         if input[j][0] is None:
             # It's a space
+            # print(f"{j} is a space, don't need to move it")
             j -= 1
             continue
         for i in range(0, j):
@@ -79,7 +81,6 @@ def part_two():
                 # Easy, just swap the blocks
                 input[i] = input[j]
                 input[j] = [None, input[j][1]]
-                j -= 1
             else:
                 assert input[i][1] > input[j][1]
                 assert input[i][0] is None
@@ -91,12 +92,14 @@ def part_two():
                 input[j] = [None, input[j][1]]
                 # Insert the block
                 input.insert(i, [block_id, size])
-                # j is now pointing to the previous index, so no need to decrement.
+                # Need to increment j to point to the right place
+                j += 1
             break
         j -= 1
 
     p_two = 0
     idx = 0
+    # print(input)
     for block_id, size in input:
         if block_id is None:
             idx += size
