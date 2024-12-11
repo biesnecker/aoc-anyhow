@@ -1,5 +1,4 @@
 from utils import input_as_string
-from typing import List
 from functools import cache
 
 input = list(map(int, input_as_string("202411.txt").split()))
