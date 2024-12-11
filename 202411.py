@@ -10,9 +10,11 @@ def evolve(n: int, steps_left: int) -> int:
         return 1  # the current number is the last one
     if n == 0:
         return evolve(1, steps_left - 1)
-    if len(str(n)) % 2 == 0:
-        first = int(str(n)[: len(str(n)) // 2])
-        second = int(str(n)[len(str(n)) // 2 :])
+    ns = str(n)
+    nsl = len(ns)
+    if nsl % 2 == 0:
+        first = int(ns[: nsl // 2])
+        second = int(ns[nsl // 2 :])
         return evolve(first, steps_left - 1) + evolve(second, steps_left - 1)
     return evolve(n * 2024, steps_left - 1)
 
