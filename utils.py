@@ -81,6 +81,38 @@ def turn_right(dir: Dir) -> Dir:
     return Dir(dir.value * 1j)
 
 
+def move_north(pos: complex) -> complex:
+    return pos + Dir.NORTH.value
+
+
+def move_south(pos: complex) -> complex:
+    return pos + Dir.SOUTH.value
+
+
+def move_east(pos: complex) -> complex:
+    return pos + Dir.EAST.value
+
+
+def move_west(pos: complex) -> complex:
+    return pos + Dir.WEST.value
+
+
+def move_northeast(pos: complex) -> complex:
+    return pos + Dir.NORTHEAST.value
+
+
+def move_northwest(pos: complex) -> complex:
+    return pos + Dir.NORTHWEST.value
+
+
+def move_southeast(pos: complex) -> complex:
+    return pos + Dir.SOUTHEAST.value
+
+
+def move_southwest(pos: complex) -> complex:
+    return pos + Dir.SOUTHWEST.value
+
+
 def coord_to_xy(coord: complex) -> Tuple[int, int]:
     return (int(coord.real), int(coord.imag))
 
