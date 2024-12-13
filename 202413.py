@@ -27,11 +27,11 @@ def solve(px: int, py: int, ax: int, ay: int, bx: int, by: int) -> int:
     return 0
 
 
-input = []
+input: List[List[Tuple[int, int]]] = []
 for key, group in groupby(input_as_strings_iter("202413.txt"), lambda x: x != ""):
     if not key:
         continue
-    res = []
+    res: List[Tuple[int, int]] = []
     for s in group:
         a = re.match(r".+: X[+=](\d+), Y[+=](\d+)", s)
         assert a is not None
