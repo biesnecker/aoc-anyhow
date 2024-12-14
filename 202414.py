@@ -7,7 +7,6 @@ type Input = List[List[Tuple[int, int]]]
 
 input: Input = []
 for line in input_as_strings_iter("202414.txt"):
-    # p=65,86 v=-38,-3
     matches = re.match(r"p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)", line)
     input.append(
         [
@@ -35,11 +34,6 @@ def score(input: Input, width: int, height: int, step: int) -> int:
 
 
 print(f"Part one: {score(input, 101, 103, 100)}")
-
-
-def var(data: List[int]) -> float:
-    mean = sum(data) / len(data)
-    return sum(abs(x - mean) for x in data)
 
 
 def find_min_variance(input: Input, width: int, height: int) -> Tuple[int, int]:
