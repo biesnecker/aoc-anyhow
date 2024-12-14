@@ -1,6 +1,7 @@
 from utils import input_as_strings_iter
 from typing import List, Tuple
 import re
+import statistics
 
 type Input = List[List[Tuple[int, int]]]
 
@@ -36,6 +37,31 @@ def score(input: Input, width: int, height: int, step: int) -> int:
 print(f"Part one: {score(input, 101, 103, 100)}")
 
 
+def var(data: List[int]) -> float:
+    mean = sum(data) / len(data)
+    return sum(abs(x - mean) for x in data)
+
+
+def find_min_variance(input: Input, width: int, height: int) -> Tuple[int, int]:
+    min_x_variance = float("inf")
+    min_x_step = 0
+    min_y_variance = float("inf")
+    min_y_step = 0
+    for step in range(width):
+        xs = [(px + vx * step) % width for [(px, _), (vx, _)] in input]
+        xvar = statistics.variance(xs)
+        if xvar < min_x_variance:
+            min_x_variance = xvar
+            min_x_step = step
+    for step in range(height):
+        ys = [(py + vy * step) % height for [(_, py), (_, vy)] in input]
+        yvar = statistics.variance(ys)
+        if yvar < min_y_variance:
+            min_y_variance = yvar
+            min_y_step = step
+    return (min_x_step, min_y_step)
+
+
 def display(input: Input, width: int, height: int, step: int) -> None:
     grid = [["." for _ in range(width)] for _ in range(height)]
     for [(px, py), (vx, vy)] in input:
@@ -46,13 +72,7 @@ def display(input: Input, width: int, height: int, step: int) -> None:
         print("".join(row))
 
 
-min_score = float("inf")
-min_score_step = 0
-for step in range(8000):
-    s = score(input, 101, 103, step)
-    if s < min_score:
-        min_score = s
-        min_score_step = step
-
-display(input, 101, 103, min_score_step)
-print(f"Part two: {min_score_step}")
+x, y = find_min_variance(input, 101, 103)
+part_two = 101 * (51 * (y - x) % 103) + x
+display(input, 101, 103, part_two)
+print(f"Part two: {part_two}")
