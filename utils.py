@@ -74,11 +74,15 @@ def get_neighbors_all(pos: complex) -> Iterator[Tuple[Dir, complex]]:
 
 
 def turn_left(dir: Dir) -> Dir:
-    return Dir(dir.value * -11j)
+    return Dir(dir.value * -1j)
 
 
 def turn_right(dir: Dir) -> Dir:
     return Dir(dir.value * 1j)
+
+
+def move(pos: complex, dir: Dir) -> complex:
+    return pos + dir.value
 
 
 def move_north(pos: complex) -> complex:
