@@ -39,7 +39,7 @@ def part_one(regs: List[int], instrs: List[int]):
     while ip >= 0 and ip < len(instrs) - 1:
         op = instrs[ip]
         if op == 0:
-            regs[0] = regs[0] // int(2 ** combo(regs, instrs[ip + 1]))
+            regs[0] >>= combo(regs, instrs[ip + 1])
             ip += 2
         elif op == 1:
             regs[1] = regs[1] ^ instrs[ip + 1]
@@ -59,10 +59,10 @@ def part_one(regs: List[int], instrs: List[int]):
             out.append(combo(regs, instrs[ip + 1]) % 8)
             ip += 2
         elif op == 6:
-            regs[1] = regs[0] // int(2 ** combo(regs, instrs[ip + 1]))
+            regs[1] = regs[0] >> combo(regs, instrs[ip + 1])
             ip += 2
         elif op == 7:
-            regs[2] = regs[0] // int(2 ** combo(regs, instrs[ip + 1]))
+            regs[2] = regs[0] >> combo(regs, instrs[ip + 1])
             ip += 2
         else:
             raise ValueError(f"Invalid op: {op}")
