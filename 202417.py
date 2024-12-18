@@ -38,6 +38,7 @@ def part_one(regs: List[int], instrs: List[int]):
     ip = 0
     while ip >= 0 and ip < len(instrs) - 1:
         op = instrs[ip]
+        # print(ip, regs, op, instrs[ip + 1])
         if op == 0:
             regs[0] >>= combo(regs, instrs[ip + 1])
             ip += 2
