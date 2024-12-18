@@ -13,7 +13,7 @@ for [x, y] in input_as_list_of_numbers_iter("202418.txt", split_on=","):
 
 
 def can_navigate(steps):
-    grid = {c for c in input[:steps]}
+    grid = set(input[:steps])
     q = deque([(0, xy_to_coord(0, 0))])
     visited = set()
     target = xy_to_coord(70, 70)
