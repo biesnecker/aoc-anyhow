@@ -14,7 +14,7 @@ for [x, y] in input_as_list_of_numbers_iter("202418.txt", split_on=","):
 def can_navigate(steps):
     grid = {c for c in input[:steps]}
     q = [(0, 0, 0)]
-    cheapest = {xy_to_coord(0, 0): 0}
+    visited = set()
     target = xy_to_coord(70, 70)
     x_bound = 70
     y_bound = 70
@@ -25,11 +25,16 @@ def can_navigate(steps):
             return cost
         for _, npos in get_neighbors_cardinal(pos):
             x, y = coord_to_xy(npos)
-            if x < 0 or y < 0 or x > x_bound or y > y_bound or npos in grid:
+            if (
+                x < 0
+                or y < 0
+                or x > x_bound
+                or y > y_bound
+                or npos in visited
+                or npos in grid
+            ):
                 continue
-            if npos in cheapest and cheapest[npos] <= cost + 1:
-                continue
-            cheapest[npos] = cost + 1
+            visited.add(npos)
             heapq.heappush(q, (cost + 1, x, y))
     return None
 
