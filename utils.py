@@ -130,4 +130,4 @@ def coord_in_bounds(c: complex, x_range: range, y_range: range) -> bool:
 
 
 def manhattan_distance(a: complex, b: complex) -> int:
-    return int(abs(a.real - b.real) + abs(a.imag - b.imag))
+    return abs(int(a.real) - int(b.real)) + abs(int(a.imag) - int(b.imag))
