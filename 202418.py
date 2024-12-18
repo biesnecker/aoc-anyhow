@@ -3,6 +3,7 @@ from utils import (
     xy_to_coord,
     coord_to_xy,
     get_neighbors_cardinal,
+    coord_in_bounds,
 )
 from collections import deque
 
@@ -25,10 +26,7 @@ def can_navigate(steps):
         for _, npos in get_neighbors_cardinal(pos):
             nx, ny = coord_to_xy(npos)
             if (
-                nx < 0
-                or ny < 0
-                or nx > x_bound
-                or ny > y_bound
+                not coord_in_bounds(npos, range(x_bound + 1), range(y_bound + 1))
                 or npos in visited
                 or npos in grid
             ):

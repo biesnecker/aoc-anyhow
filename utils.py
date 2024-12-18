@@ -123,3 +123,7 @@ def coord_to_xy(coord: complex) -> Tuple[int, int]:
 
 def xy_to_coord(x: int, y: int) -> complex:
     return x + y * 1j
+
+
+def coord_in_bounds(c: complex, x_range: range, y_range: range) -> bool:
+    return int(c.real) in x_range and int(c.imag) in y_range
