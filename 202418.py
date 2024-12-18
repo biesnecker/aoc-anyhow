@@ -4,7 +4,7 @@ from utils import (
     coord_to_xy,
     get_neighbors_cardinal,
 )
-import heapq
+from collections import deque
 
 input = []
 for [x, y] in input_as_list_of_numbers_iter("202418.txt", split_on=","):
@@ -13,13 +13,13 @@ for [x, y] in input_as_list_of_numbers_iter("202418.txt", split_on=","):
 
 def can_navigate(steps):
     grid = {c for c in input[:steps]}
-    q = [(0, 0, 0)]
+    q = deque([(0, 0, 0)])
     visited = set()
     target = xy_to_coord(70, 70)
     x_bound = 70
     y_bound = 70
     while q:
-        cost, x, y = heapq.heappop(q)
+        cost, x, y = q.popleft()
         pos = xy_to_coord(x, y)
         if pos == target:
             return cost
@@ -35,7 +35,7 @@ def can_navigate(steps):
             ):
                 continue
             visited.add(npos)
-            heapq.heappush(q, (cost + 1, x, y))
+            q.append((cost + 1, x, y))
     return None
 
 
