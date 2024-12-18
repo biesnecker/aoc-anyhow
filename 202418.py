@@ -13,29 +13,28 @@ for [x, y] in input_as_list_of_numbers_iter("202418.txt", split_on=","):
 
 def can_navigate(steps):
     grid = {c for c in input[:steps]}
-    q = deque([(0, 0, 0)])
+    q = deque([(0, xy_to_coord(0, 0))])
     visited = set()
     target = xy_to_coord(70, 70)
     x_bound = 70
     y_bound = 70
     while q:
-        cost, x, y = q.popleft()
-        pos = xy_to_coord(x, y)
+        cost, pos = q.popleft()
         if pos == target:
             return cost
         for _, npos in get_neighbors_cardinal(pos):
-            x, y = coord_to_xy(npos)
+            nx, ny = coord_to_xy(npos)
             if (
-                x < 0
-                or y < 0
-                or x > x_bound
-                or y > y_bound
+                nx < 0
+                or ny < 0
+                or nx > x_bound
+                or ny > y_bound
                 or npos in visited
                 or npos in grid
             ):
                 continue
             visited.add(npos)
-            q.append((cost + 1, x, y))
+            q.append((cost + 1, npos))
     return None
 
 
