@@ -1,16 +1,20 @@
 from utils import input_as_strings_iter
-from typing import List, Set
+from collections import defaultdict
+from typing import List, Set, DefaultDict
 from functools import cache
 
 input_part_one = True
 patterns: List[str] = []
+towels: DefaultDict[str, List[str]] = defaultdict(list)
 
 for line in input_as_strings_iter("202419.txt"):
     if line == "":
         input_part_one = False
         continue
     if input_part_one:
-        towels: List[str] = [t.strip() for t in line.split(",")]
+        for t in line.split(", "):
+            t = t.strip()
+            towels[t[0]].append(t)
     else:
         patterns.append(line)
 
@@ -21,7 +25,7 @@ def possible(pattern: str) -> int:
         return 1
 
     candidates = []
-    for t in towels:
+    for t in towels[pattern[0]]:
         if pattern.startswith(t):
             candidates.append(pattern[len(t) :])
     return sum(possible(c) for c in candidates)
