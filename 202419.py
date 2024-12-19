@@ -1,6 +1,6 @@
 from utils import input_as_strings_iter
 from collections import defaultdict
-from typing import List, Set, DefaultDict
+from typing import List, DefaultDict
 from functools import cache
 
 input_part_one = True
