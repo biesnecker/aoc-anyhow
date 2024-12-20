@@ -52,18 +52,35 @@ class Dir(Enum):
     SOUTHWEST = -1 + 1j
 
 
+def get_directions_cardinal() -> Iterator[Dir]:
+    yield Dir.NORTH
+    yield Dir.SOUTH
+    yield Dir.WEST
+    yield Dir.EAST
+
+
+def get_directions_diagonal() -> Iterator[Dir]:
+    yield Dir.NORTHEAST
+    yield Dir.NORTHWEST
+    yield Dir.SOUTHEAST
+    yield Dir.SOUTHWEST
+
+
+def get_directions_all() -> Iterator[Dir]:
+    for d in get_directions_cardinal():
+        yield d
+    for d in get_directions_diagonal():
+        yield d
+
+
 def get_neighbors_cardinal(pos: complex) -> Iterator[Tuple[Dir, complex]]:
-    yield (Dir.NORTH, pos + Dir.NORTH.value)
-    yield (Dir.SOUTH, pos + Dir.SOUTH.value)
-    yield (Dir.WEST, pos + Dir.WEST.value)
-    yield (Dir.EAST, pos + Dir.EAST.value)
+    for d in get_directions_cardinal():
+        yield (d, pos + d.value)
 
 
 def get_neighbors_diagonal(pos: complex) -> Iterator[Tuple[Dir, complex]]:
-    yield (Dir.NORTHEAST, pos + Dir.NORTHEAST.value)
-    yield (Dir.NORTHWEST, pos + Dir.NORTHWEST.value)
-    yield (Dir.SOUTHEAST, pos + Dir.SOUTHEAST.value)
-    yield (Dir.SOUTHWEST, pos + Dir.SOUTHWEST.value)
+    for d in get_directions_diagonal():
+        yield (d, pos + d.value)
 
 
 def get_neighbors_all(pos: complex) -> Iterator[Tuple[Dir, complex]]:
@@ -81,8 +98,8 @@ def turn_right(dir: Dir) -> Dir:
     return Dir(dir.value * 1j)
 
 
-def move(pos: complex, dir: Dir) -> complex:
-    return pos + dir.value
+def move(pos: complex, dir: Dir, steps: int = 1) -> complex:
+    return pos + (dir.value * steps)
 
 
 def move_north(pos: complex) -> complex:
