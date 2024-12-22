@@ -30,8 +30,6 @@ def diffs(codes: list[int]) -> list[int]:
     return [b - a for a, b in pairwise(codes)]
 
 
-codes = [1, 10, 100, 2024]
-
 part_one = 0
 part_two = 0
 c = Counter()
