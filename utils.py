@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Iterator, List, Optional, Tuple
+from itertools import islice
 
 
 def input_as_string(filename: str) -> str:
@@ -148,3 +149,13 @@ def coord_in_bounds(c: complex, x_range: range, y_range: range) -> bool:
 
 def manhattan_distance(a: complex, b: complex) -> int:
     return abs(int(a.real) - int(b.real)) + abs(int(a.imag) - int(b.imag))
+
+
+def window(seq, n=2):
+    it = iter(seq)
+    result = tuple(islice(it, n))
+    if len(result) == n:
+        yield result
+    for elem in it:
+        result = result[1:] + (elem,)
+        yield result
