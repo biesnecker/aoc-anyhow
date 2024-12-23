@@ -11,12 +11,12 @@ for line in input_as_strings_iter("202423.txt"):
     graph[b].add(a)
 
 
-part_one = set()
+part_one = 0
 for a in graph.keys():
     if not a.startswith("t"):
         continue
     skip: Set[str] = set()
-    for b, c in combinations(graph[a], 2):
+    for b, c in combinations((n for n in graph[a] if not n.startswith("t")), 2):
         if b in skip or c in skip:
             continue
         if a not in graph[b]:
@@ -26,8 +26,8 @@ for a in graph.keys():
             skip.add(c)
             continue
         if b in graph[c] and c in graph[b]:
-            part_one.add(tuple(sorted((a, b, c))))
-print(f"Part one: {len(part_one)}")
+            part_one += 1
+print(f"Part one: {part_one}")
 
 
 def bron_kerbosch(
