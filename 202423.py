@@ -47,6 +47,6 @@ def bron_kerbosch(
 
 
 part_two = ",".join(
-    sorted(sorted(bron_kerbosch(graph.keys()), key=lambda x: -len(x))[0])
+    sorted(sorted(bron_kerbosch(graph.keys()), key=len, reverse=True)[0])
 )
 print(f"Part two: {part_two}")
