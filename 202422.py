@@ -1,48 +1,30 @@
-from collections import Counter
-from itertools import pairwise
+from collections import deque
+from typing import Iterator
 
-from utils import input_as_numbers, window
+from utils import input_as_numbers
 
 codes = input_as_numbers("202422.txt")
 
 
 def step(code: int) -> int:
     code ^= code << 6
-    code %= 16777216
+    code &= 16777215
     code ^= code >> 5
-    code %= 16777216
+    code &= 16777215
     code ^= code << 11
-    return code % 16777216
+    return code & 16777215
 
 
-def codes_from_seed(code: int, steps=2000) -> int:
-    codes = [code]
+def step_code(code: int, steps: int = 2000) -> Iterator[int]:
+    yield code
     for _ in range(steps):
         code = step(code)
-        codes.append(code)
-    return codes
+        yield code
 
 
-def prices(codes: list[int]) -> list[int]:
-    return [c % 10 for c in codes]
+def last_code(code: int, steps: int = 2000) -> int:
+    return deque(step_code(code, steps), maxlen=1).pop()
 
 
-def diffs(codes: list[int]) -> list[int]:
-    return [b - a for a, b in pairwise(codes)]
-
-
-part_one = 0
-part_two = 0
-c = Counter()
-for code in codes:
-    cfs = codes_from_seed(code, steps=2000)
-    part_one += cfs[-1]
-    p = prices(cfs)
-    d = diffs(p)
-    distinct = set()
-    for g in window(d, 4):
-        distinct.add(tuple(g))
-    for x in distinct:
-        c[x] += 1
+part_one = sum(last_code(c, steps=2000) for c in codes)
 print(f"Part one: {part_one}")
-print(c.most_common(3))
