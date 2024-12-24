@@ -1,4 +1,4 @@
-from intcode import intcode_from_file, OutputInterrupt
+from intcode import OutputInterrupt, intcode_from_file
 
 part_one = None
 c = intcode_from_file("201909.txt", [1])

@@ -1,6 +1,5 @@
 from functools import cache
 
-
 with open("202022.txt", "r") as f:
     lines = f.read().strip().split("\n\n")
     player1 = tuple(map(int, lines[0].splitlines()[1:]))

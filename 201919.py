@@ -1,4 +1,4 @@
-from intcode import intcode_from_prog, OutputInterrupt, read_intcode
+from intcode import OutputInterrupt, intcode_from_prog, read_intcode
 
 prog = read_intcode("201919.txt")
 

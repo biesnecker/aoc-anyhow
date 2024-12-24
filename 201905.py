@@ -1,4 +1,4 @@
-from intcode import Intcode, OutputInterrupt, intcode_from_file
+from intcode import OutputInterrupt, intcode_from_file
 
 intcode = intcode_from_file("201905.txt", [1])
 while not intcode.halted:

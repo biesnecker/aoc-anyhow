@@ -1,5 +1,5 @@
-from functools import reduce
 from collections import defaultdict
+from functools import reduce
 
 with open("202315.txt", "r") as f:
     initseq = f.read().strip().split(",")

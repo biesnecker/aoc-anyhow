@@ -1,5 +1,4 @@
 import math
-from collections import defaultdict
 
 with open("201910.txt", "r") as f:
     asteroids = {

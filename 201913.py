@@ -1,6 +1,7 @@
 from collections import defaultdict
 from enum import IntEnum
-from intcode import Intcode, InputInterrupt, OutputInterrupt, intcode_from_file
+
+from intcode import InputInterrupt, OutputInterrupt, intcode_from_file
 
 
 class Tile(IntEnum):

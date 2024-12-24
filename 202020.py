@@ -1,6 +1,7 @@
 import functools
-import operator
 import itertools
+import operator
+
 import networkx
 import numpy as np
 

@@ -1,5 +1,5 @@
-from collections import defaultdict
 import math
+from collections import defaultdict
 
 games = {}
 with open("202302.txt", "r") as f:

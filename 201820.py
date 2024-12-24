@@ -1,5 +1,5 @@
-from collections import defaultdict
 import math
+from collections import defaultdict
 
 s = []
 

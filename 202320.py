@@ -1,7 +1,7 @@
+import math
 from abc import abstractmethod
 from collections import defaultdict, deque
 from dataclasses import dataclass
-import math
 
 
 @dataclass

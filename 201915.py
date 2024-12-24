@@ -1,8 +1,8 @@
-from intcode import Intcode, intcode_from_file, OutputInterrupt, InputInterrupt
-from collections import defaultdict, deque
+from collections import deque
 from copy import copy
 from enum import IntEnum
-import math
+
+from intcode import OutputInterrupt, intcode_from_file
 
 
 class Tile(IntEnum):

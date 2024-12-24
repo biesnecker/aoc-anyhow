@@ -1,4 +1,5 @@
 from collections import deque
+
 from grid import grid_wh
 
 grid = set()

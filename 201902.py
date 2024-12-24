@@ -1,4 +1,4 @@
-from intcode import Intcode, intcode_from_file
+from intcode import intcode_from_file
 
 intcode = intcode_from_file("201902.txt", mod={1: 12, 2: 2})
 intcode.run()

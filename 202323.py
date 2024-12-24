@@ -1,4 +1,5 @@
 from collections import deque
+
 import networkx as nx
 
 with open("202323.txt", "r") as f:

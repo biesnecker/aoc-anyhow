@@ -1,5 +1,6 @@
-from intcode import Intcode, InputInterrupt, OutputInterrupt, read_intcode
 from itertools import permutations
+
+from intcode import InputInterrupt, Intcode, OutputInterrupt, read_intcode
 
 prog = read_intcode("201907.txt")
 part_one = 0

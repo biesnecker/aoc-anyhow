@@ -1,6 +1,6 @@
-from enum import IntEnum
 import heapq
 import math
+from enum import IntEnum
 
 with open("202317.txt", "r") as f:
     grid = [[int(c) for c in line.strip()] for line in f]

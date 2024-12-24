@@ -1,6 +1,3 @@
-from collections import defaultdict
-
-
 def torule(s):
     return (s[0] == "#", s[1] == "#", s[2] == "#", s[3] == "#", s[4] == "#")
 
