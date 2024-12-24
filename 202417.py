@@ -1,4 +1,3 @@
-import concurrent.futures
 from typing import List
 
 from utils import input_as_strings_iter

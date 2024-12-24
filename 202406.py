@@ -1,8 +1,6 @@
-from collections import defaultdict
-from enum import unique
-from typing import DefaultDict, Optional, Set, Tuple
+from typing import Optional, Set, Tuple
 
-from utils import coord_to_xy, Dir, input_as_strings_iter, turn_right
+from utils import Dir, coord_to_xy, input_as_strings_iter, turn_right
 
 
 # Given a (start) and b (end), return the direction to move to get from a to b,

@@ -1,11 +1,12 @@
+from collections import deque
+
 from utils import (
-    input_as_list_of_numbers_iter,
-    xy_to_coord,
+    coord_in_bounds,
     coord_to_xy,
     get_neighbors_cardinal,
-    coord_in_bounds,
+    input_as_list_of_numbers_iter,
+    xy_to_coord,
 )
-from collections import deque
 
 input = []
 for [x, y] in input_as_list_of_numbers_iter("202418.txt", split_on=","):

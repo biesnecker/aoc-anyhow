@@ -1,6 +1,7 @@
-from utils import input_as_numbers, window
-from itertools import pairwise
 from collections import Counter
+from itertools import pairwise
+
+from utils import input_as_numbers, window
 
 codes = input_as_numbers("202422.txt")
 

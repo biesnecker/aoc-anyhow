@@ -1,6 +1,4 @@
-import sys
-from dataclasses import dataclass
-from typing import List, Union
+from typing import List
 
 from utils import input_as_string
 

@@ -1,7 +1,8 @@
-from utils import input_as_strings_iter
-from typing import List, Tuple
 import re
 import statistics
+from typing import List, Tuple
+
+from utils import input_as_strings_iter
 
 type Input = List[List[Tuple[int, int]]]
 

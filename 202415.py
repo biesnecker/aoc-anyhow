@@ -1,5 +1,6 @@
-from utils import input_as_strings_iter, Dir, xy_to_coord, coord_to_xy
 from typing import Dict, List, Tuple
+
+from utils import Dir, coord_to_xy, input_as_strings_iter, xy_to_coord
 
 
 def parse_input(

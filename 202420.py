@@ -1,12 +1,13 @@
-from utils import (
-    input_as_strings_iter,
-    coord_to_xy,
-    xy_to_coord,
-    get_neighbors_cardinal,
-    manhattan_distance,
-)
-from typing import Set, List, Deque, Dict
 from collections import deque
+from typing import Deque, Dict, List, Set
+
+from utils import (
+    coord_to_xy,
+    get_neighbors_cardinal,
+    input_as_strings_iter,
+    manhattan_distance,
+    xy_to_coord,
+)
 
 grid: Set[complex] = set()
 start_pos: complex = 0

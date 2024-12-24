@@ -1,13 +1,6 @@
-from utils import (
-    input_as_strings_iter,
-    Dir,
-    xy_to_coord,
-    coord_to_xy,
-    move,
-    turn_left,
-    turn_right,
-)
-from typing import Dict, List, Tuple, Set
+from typing import Dict, Set, Tuple
+
+from utils import Dir, input_as_strings_iter, move, turn_left, turn_right, xy_to_coord
 
 grid: Set[complex] = set()
 start_pos = 0

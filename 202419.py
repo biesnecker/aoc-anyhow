@@ -1,7 +1,8 @@
-from utils import input_as_strings_iter
 from collections import defaultdict
-from typing import List, DefaultDict
 from functools import cache
+from typing import DefaultDict, List
+
+from utils import input_as_strings_iter
 
 input_part_one = True
 patterns: List[str] = []
