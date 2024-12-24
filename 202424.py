@@ -53,10 +53,10 @@ def part_two():
     def is_input_wire(*wires: str) -> bool:
         return all(wire.startswith("x") or wire.startswith("y") for wire in wires)
 
-    def is_output_wire(*wires: List[str]) -> bool:
+    def is_output_wire(*wires: str) -> bool:
         return all(wire.startswith("z") for wire in wires)
 
-    def is_first_bit(*wires: List[str]) -> bool:
+    def is_first_bit(*wires: str) -> bool:
         return all(wire.endswith("00") for wire in wires)
 
     for output, (op, [a, b]) in net.items():
