@@ -1,10 +1,10 @@
 import re
 from functools import cache
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Set, Tuple
 
 from utils import input_as_strings_iter
 
-known: Dict[str, Optional[int]] = dict()
+known: Dict[str, int] = dict()
 net: Dict[str, Tuple[str, List[str]]] = dict()
 all_wires: Set[str] = set()
 part_one = True
